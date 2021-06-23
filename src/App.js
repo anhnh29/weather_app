@@ -1,17 +1,15 @@
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "weather-icons/css/weather-icons.css";
 import ShowWeather from "./components/ShowWeather";
 
 function App() {
   const axios = require("axios");
-  // const API_KEY = process.env.API_KEY;
-  const API_KEY = "7b8213dc250ba87c3d3efb34244a1216";
+  const API_KEY = process.env.API_KEY;
 
   const [city, setCity] = useState();
   const [info, setInfo] = useState({});
   const [icon, setIcon] = useState({});
-  // const getWeather = useRef();
 
   const weatherIcon = {
     Thunderstorm: "wi-thunderstorm",
@@ -24,9 +22,6 @@ function App() {
   };
 
   const getWeatherIcon = (icons, rangeId) => {
-    console.log("icons", icons);
-    console.log("rangeId", rangeId);
-
     switch (true) {
       case rangeId >= 200 && rangeId < 232:
         setIcon(icons.Thunderstorm);
@@ -60,8 +55,6 @@ function App() {
         `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`
       )
       .then(function (response) {
-        console.log("response", response);
-
         setInfo({
           city: response.data.name,
           country: response.data.sys.country,
@@ -71,20 +64,11 @@ function App() {
           description: response.data.weather[0].description,
         });
 
-        console.log("response", response);
-
         getWeatherIcon(weatherIcon, response.data.weather[0].id);
       })
       .catch(function (error) {
-        console.log("Heresssss", error);
-        alert("Error");
+        alert("Error", error);
       });
-    const call_apt = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`
-    );
-    const res = await call_apt.json();
-
-    console.log("res", res);
   };
 
   useEffect(() => {
